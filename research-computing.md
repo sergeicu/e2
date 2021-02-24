@@ -1,5 +1,5 @@
 # Intro 
-Login to your e2 cluster from your CRL machine 
+Login to e2 cluster from your CRL machine 
 `ssh <username>@e2.tch.harvard.edu`
 [more info](http://websvc4.tch.harvard.edu:8090/display/RCK/Access+to+E2)
 
