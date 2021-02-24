@@ -238,7 +238,7 @@ python test.py
 - requires 
 
 
-# notes from meeting 
+# DRAFT notes from meeting (serge will rewrite these)
 
 biogrids - add 
 
@@ -285,3 +285,7 @@ what is upload limit - 100Gb?
 
 
 ssh boreas, zephyr, eurus, auster
+
+
+
+interactive slurm 
