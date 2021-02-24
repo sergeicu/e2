@@ -1,3 +1,5 @@
+Most links in this tutorial require BCH VPN access. Make sure you are logged in via Pulse Secure. 
+
 # Intro 
 
 Login to e2 cluster from your CRL machine: 
