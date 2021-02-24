@@ -31,7 +31,7 @@ Use this page as a quick guide. Use Research Computing wiki for advanced info (l
 - this new machine will have access to the same data as your e2 login node (e.g. `/home/<username>` and `temp_work/<username>`) 
 
 #### How to load software on e2 
-- research computing staff had pre-installed many different software on e2 for us 
+- research computing staff had pre-installed many different software packages on e2 for us 
 - the list can be found [here](http://websvc4.tch.harvard.edu:8090/display/RCK/Software+Packages) 
 - to load any of these software you write the following command _after_ you logged into CPU/GPU node: `load module <name>` 
 - e.g. `module load matlab`, `module load anaconda`, `module load singularity`
@@ -44,11 +44,14 @@ Use this page as a quick guide. Use Research Computing wiki for advanced info (l
 - to start SLURM in batch mode, use `sbatch` command instead of `srun` command 
 - e.g. `sbatch /home/<username>/your_sample_script.sh`
 - there are multiple benefits to running SLURM in batch mode:
-0. Running GUI software (e.g. matlab) is very difficult with e2 interactive mode (if not impossible)
 1. you do not have to wait for resources to become available to launch your job. SLURM will queue your request and automatically start your job for you 
 2. SLURM will send you emails when your job starts, stops or throws an error
 3. You can queue multiple tasks in the same script, which will be executed in sequence 
 4. You can run many jobs in parallel by starting multiple `sbatch` requests 
+
+#### Running SLURM with visualization (e.g. matlab) 
+- If you prefer to use GUI (e.g. for matlab) you can start SLURM with `salloc` command
+- Instructions are [here](http://websvc4.tch.harvard.edu:8090/display/RCK/Visualization+job)
 
 #### SLURM `srun` options 
 - e.g. `srun -A bch -p bch-interactive --ntasks=4 --mem=2G -t 24:00:00 --pty /bin/bash` 
@@ -98,7 +101,40 @@ matlab -nodisplay -nosplash -nodesktop -r "run('your_sample_matlab_script.m');ex
 - where `Quadro_RTX` refers to GPU type and `1` refers to number of GPUs (per node) required 
 - (unless you want to execute on multiple GPUs) you must make sure that you execute `export CUDA_AVAILABLE_DEVICES=1` before running your deep tensorflow / pytorch script 
 - the number in the CUDA_AVAILABLE_DEVICES refers to the same number as in `--gres` command 
-- you can specify the number of CPU cores via `ntassks` and CPU RAM via `mem` as well 
+- [optional] you can specify the number of CPU cores via `ntasks` and _CPU_ RAM via `mem` as well 
+- you must run `module load anaconda3` followed by a) `source activate tf-gpu` for tensorflow access b) `source activate pytorch-gpu` for pytorch access  
+- example script: 
+```
+#!/bin/bash 
+# Sample batchscript to run a tensorflow job on HPC 
+#SBATCH --partition=bch-gpu                            
+#SBATCH --time=00:05:00 
+#SBATCH --job-name=test-gpu 
+#SBATCH --mail-type=BEGIN,END,FAIL
+#SBATCH --mail-user=<username>@tch.harvard.edu 
+#SBATCH --output=output_%j.txt
+#SBATCH --nodes=1 
+#SBATCH --ntasks=4
+#SBATCH --mem=8G      # NB this refers to CPU RAM, not GPU RAM
+#SBATCH --gres=gpu:Tesla_T:1
+
+export CUDA_VISIBLE_DEVICES=1
+module load anaconda3
+source activate tf-gpu
+python test.py
+```
+
+#### How to list your queued/running SLURM jobs 
+- `squeue -u <username>`
+
+#### How to cancel your SLURM jobs 
+- `scancel <jobid>` (get jobid from `squeue` command)  
+
+#### FAQ on SLURM
+- [more help on `srun`](http://websvc4.tch.harvard.edu:8090/display/RCK/Interactive+job)
+- [more examples of `sbatch`](http://websvc4.tch.harvard.edu:8090/display/RCK/Submit+job)
+- extensive list of quenstions and answers on SLURM is [here](http://websvc4.tch.harvard.edu:8090/pages/viewpage.action?pageId=82223566)
+- [usage guidelines](http://websvc4.tch.harvard.edu:8090/display/RCK/Usage+Guidelines)
 
 #### List of available GPUs  
 - As of this this month there are ~29 GPUs on the e2 cluster  
@@ -107,8 +143,17 @@ matlab -nodisplay -nosplash -nodesktop -r "run('your_sample_matlab_script.m');ex
 - There is a limit of 4 GPUs per person at any one time 
 - [full list](http://websvc4.tch.harvard.edu:8090/display/RCK/Partition+Association)
 
+
 #### List of available CPUs  
-- 
+- A
+
+#### On deploying Docker images 
+- Docker requires sudo access, which is unavailable on e2
+- Use singularity instead, which can build and run docker images without sudo 
+- Instructions on building singularity images are [here](http://websvc4.tch.harvard.edu:8090/pages/viewpage.action?pageId=96637887)
+
+#### Using anaconda/conda
+- to load 
 
 #### List of additional GPUs and CPUs:
 http://websvc4.tch.harvard.edu:8090/display/RCK/High-Performance+Computing+MGHPCC+Cluster
@@ -228,3 +273,6 @@ scancel <jobid>
 - you can also copy data between e2 and your BCH Google Drive
 - you can do this by using `rclone` command
 - please refer to my [BCH Google Drive tutorial](https://github.com/sergeicu/e2/blob/main/bch-google-drive.md) and [RC website](http://websvc4.tch.harvard.edu:8090/display/RCK/Google+Drive+to+E2) for more info 
+
+#### More guidelines on data transfer 
+- http://websvc4.tch.harvard.edu:8090/display/RCK/Data+transfer
