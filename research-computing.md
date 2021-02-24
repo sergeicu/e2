@@ -232,7 +232,13 @@ python test.py
 
 # PHI data on e2 via /lab-share/Rad-Warfield-e2: 
 - tbd with Simon during the journal club  
+- IRB for MRI image analysis and recon - everybody who ever joined the lab - is covered under this irb (retrospective analysis of data)
+- use group management to control shared acccess (via 'groupadd' etc) 
+- google drives not supposed to have protected information (PHI)
+- requires 
 
+
+# notes from meeting 
 
 biogrids - add 
 
@@ -275,3 +281,7 @@ rclone sync /lab-share/Neuro-Cohen-e2/Public/connectomes         drive_cohenlab_
 
 
 what is upload limit - 100Gb?
+
+
+
+ssh boreas, zephyr, eurus, auster
