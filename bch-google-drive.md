@@ -4,7 +4,8 @@ Quick intro to BCH Google Drive.
 - Login - http://drive.bchresearch.org
 - [Install](https://www.google.com/intl/en_ca/drive/download/
 ) Google Drive on your laptop
-- IMPORTANT: BCH Google Drive is for NON-PHI data only (with exception - see [here](#PHI-data))
+- IMPORTANT: BCH Google Drive is for NON-PHI data only 
+- If you are added to a specific IRB, you _can_ store PHI data that concerns _this specific IRB_ to a _specific location_ on BCH Drive (see [here](#PHI-data))
 
 #### Intro to rclone 
 - To copy files between Google Drive and your CRL machine (or home computer) we use `rclone` 
