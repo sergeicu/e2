@@ -5,8 +5,8 @@ Login to e2 cluster from your CRL machine:
 - [more info](http://websvc4.tch.harvard.edu:8090/display/RCK/Access+to+E2)
 
 Your e2 root directory has the following structure: 
-- `/home/<username>` - the directory upon which you land when connecting to e2 is deceptively named in the same way as your home directory on CRL machine 
-- however this is a totally independent space 
+- `/home/<username>` - the directory upon which you land when connecting to e2 is deceptively named in the same way as your home directory on CRL filesystem 
+- however this is a totally independent directory, which has no access to your CRL filesystem at all  
 - this root directory has 50 Gb file limit  
 - `/temp_work/<username>` - has 5TB file limit for _each_ user. However, _each_ file that is untouched for >30days will be automatically deleted. 
 [more info](http://websvc4.tch.harvard.edu:8090/display/RCK/Usage+Guidelines)
