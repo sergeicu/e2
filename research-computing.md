@@ -271,4 +271,7 @@ SYNC ENTIRE google drive from e2 to CRL machine / local machine -
 (from alex)
 rclone sync /lab-share/Neuro-Cohen-e2/Public/connectomes         drive_cohenlab_Connectomes:/connectomes    --progress --copy-links --exclude '.*{/**,}' --delete-excluded --delete-during --drive-stop-on-upload-limit
 
+--drive-stop-on-upload-limit >> stop when limit is reached
+
+
 what is upload limit - 100Gb?
