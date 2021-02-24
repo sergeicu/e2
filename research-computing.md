@@ -1,4 +1,4 @@
-Most links in this tutorial require BCH VPN access. Make sure you are logged in via Pulse Secure. 
+Most links in this tutorial require BCH VPN access. Make sure you are logged in via Pulse Secure.   
 Use this page as a beginner guide. Use Research Computing wiki for advanced info ([link](http://rcwiki)). 
 
 # Intro 
