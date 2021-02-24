@@ -115,7 +115,7 @@ scancel <jobid>
 - [Install](https://filezilla-project.org/) Filezilla on your home computer 
 - Open Filezilla and type the following in the top bar: `HOST: sftp://e2.tch.harvard.edu Username: <username> Password: <password> Port: 22` 
 - Swap `sftp://e2.tch.harvard.edu` with `sftp://<your_crl_machine>` if you want to connect to the CRL filesystem instead 
-! [Filezilla-screenshot] (assets/filezilla-screenshot.png)
+![Filezilla-screenshot] (https://github.com/sergeicu/e2/blob/main/assets/filezilla-screenshot.png?raw=true)
 - [tip] use an arror drop-down next to Quickconnect button to access previously logged devices 
 - [tip] Click 'View/Remote Directory Tree' for tree-view of the remote machine. 
 - [tip] Right click on remote file and click 'View/Edit' to view file on your computer (it will be stored in temporary folder only) 
