@@ -97,8 +97,9 @@ scancel <jobid>
 - IMPORTANT: all data copied to e2 must be NON-PHI
 
 #### Copy your data using rsync: 
-- `rsync` is linux command that allows *copy* of files between linux harddrive and any external file storage systems 
-- rsync is installed by default on e2. I _believe_ it is also installed on CRL machines. If not, try `sudo yum install rsync` (or ask Sean to help) 
+- `rsync` is a linux command that allows you to *copy* files between a linux filesystem and any external file storage system
+- rsync is installed by default on e2.
+- I _believe_ it is also installed on CRL machines. If not, try `sudo yum install rsync` (or ask Sean to help) 
 - `rsync -e ssh -auz /fileserver/fastscratch/README.txt <username>@e2.tch.harvard.edu/home/<username>/` - copies file (folder) from CRL to e2 
 - `rsync -e ssh -auz <full_path_to_your_home_computer_folder> <username>@e2.tch.harvard.edu/home/<username>/` - from your home computer to e2 
 - `rsync -e ssh -auz <username>@e2.tch.harvard.edu/home/<username>/<folder> <full_path_to_your_home_computer_folder> ` - // from e2 to your home computer  
