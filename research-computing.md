@@ -11,11 +11,67 @@ Your e2 root directory has the following structure:
 - `/temp_work/<username>` - has 5TB file limit for _each_ user. However, _each_ file that is untouched for >30days will be automatically deleted. 
 [more info](http://websvc4.tch.harvard.edu:8090/display/RCK/Usage+Guidelines)
 
+Use this page as a quick guide. Use Research Computing wiki for advanced info (link)[http://rcwiki] (require VPN access).
+
 # Using CPU/GPU resources 
 
+#### Accessing CPU and GPU resources 
+- the e2 login node (i.e. the place where you land via `ssh <username>@e2.tch.harvard.edu`) should not be used to start any compute jobs
+- you must request a CPU/GPU machines via SLURM algorithm  
+- SLURM algorithm is a fair share queueing system that distributes resources to users 
+- in other words it performs the `ssh <machine>` command for you by considering the current demand on resources from all users 
+- if no compute nodes are available it will queue your request and execute your job as soon as resources become available 
+- all BCH researchers have access to e2 cluster
 
-#### List of available GPUs and CPUs: 
-http://websvc4.tch.harvard.edu:8090/display/RCK/Partition+Association
+#### How to request CPU on e2 (interactive) 
+- login to e2 via `ssh <username>@e2.tch.harvard.edu`
+- run `srun -A bch -p bch-interactive --pty /bin/bash`
+- is equivalent to `ssh <machine>` in SLURM 
+- if resources are available, you will immediately be logged into a new machine  
+- this new machine will have access to the same data as your e2 login node (e.g. `/home/<username>` and `temp_work/<username>`) 
+
+#### How to load software on e2 
+- research computing staff had pre-installed many different software on e2 for us 
+- the list can be found [here](http://websvc4.tch.harvard.edu:8090/display/RCK/Software+Packages) 
+- to load any of these software you write the following command _after_ you logged into CPU/GPU node: `load module <name>` 
+- e.g. `module load matlab`, `module load anaconda`, `module load singularity`
+- to request new software to be installed you must write to `research-computing@childrens.harvard.edu` 
+- alternatively, if you know how to use Docker, how can deploy Docker images via `singularity` software 
+- alternatively, if you use anaconda, you can also deploy preinstalled binaries via `conda install <binary>` command (more info below) 
+
+#### Running SLURM in interactive mode vs batch mode
+- SLURM's batch mode will execute scripts for you automatically  
+- to start SLURM in batch mode, use `sbatch` command instead of `srun` command 
+- e.g. `sbatch /home/<username>/your_sample_script.sh`
+- there are multiple benefits to running SLURM in batch mode:
+0. Running GUI software (e.g. matlab) is very difficult with e2 interactive mode   
+1. you do not have to wait for resources to become available to launch your job. SLURM will queue your request and automatically start your job for you 
+2. SLURM will send you emails when your job starts, stops or exits with an error 
+3. You can queue multiple tasks in the same script, which will be executed in sequence 
+4. You can run many jobs in parallel by starting many `sbatch` requests 
+
+#### SLURM `sbatch` and `srun` options 
+- e.g. `srun -A bch -p bch-gpu --gres=gpu:Titan_RTX:1 --nodes=1 --ntasks=4 -t 24:00:00 --pty /bin/bash` 
+- `-A bch` account name (always the same) 
+- `-p bch-gpu` partition name. Use `bch-compute`/`bch-largemem`/`bch-interactive` for CPU and `bch-gpu` for GPU. [More info](http://websvc4.tch.harvard.edu:8090/display/RCK/Computing+Resources) 
+- 
+- e.g. `srun -A bch -p bch-gpu -t 24:00:00 --gres=gpu:Quadro_RTX:1 --nodes=1 --ntasks=1 --job-name=test-compute --mem=2G --pty /bin/bash` 
+- e.g. `sbatch -A bch -p bch-compute -t 24:00:00 --mail-type=BEGIN,END,FAIL --mail-user=<username>@childrens.harvard.edu --output=out_%j.txt --nodes=1 --ntasks=1 --job-name=test-compute --mem=2G --pty /bin/bash` 
+- `srun` initiates SLURM algorithm run command 
+- `-A bch` account name (will always be the same) 
+- `-p bch-interactive` - slurm partition name ([more info](http://websvc4.tch.harvard.edu:8090/display/RCK/Computing+Resources)) 
+
+#### How to request GPU on e2 
+- 
+
+#### List of available GPUs  
+- As of this this month there are ~29 GPUs on the e2 cluster  
+- At least a dozen of them have 24Gb of RAM 
+- These GPUs are of type: Tesla_K, Tesla_T, Titan_RTX (24Gb), Quadro_RTX (24GB)
+- There is a limit of 4 GPUs per person at any one time  
+- [full list](http://websvc4.tch.harvard.edu:8090/display/RCK/Partition+Association)
+
+Tesla_T:<N> OR --gres=gpu:Tesla_K:<N> OR --gres=gpu:Titan_RTX:<N> OR --gres=gpu:Quadro_RTX:<N>
 
 #### List of additional GPUs and CPUs:
 http://websvc4.tch.harvard.edu:8090/display/RCK/High-Performance+Computing+MGHPCC+Cluster
@@ -127,7 +183,7 @@ scancel <jobid>
 - its location on CRL filesystem is `/fileserver/Rad-Warfield-e2/` 
 - its location on e2 filesystem is `/lab-share/Rad-Warfield-e2/`
 - IMPORTANT 1: you must write to 'research-computing@childrens.harvard.edu' to request `read/write/execute` permissions on /lab-share/Rad-Warfield-e2 folder on e2 cluster (you must specify that you are part of Simon's research group) 
-- IMPORTANT2: this location is ONLY accessible via the following machines on CRL: boreas, auster, io, ganymede 
+- IMPORTANT 2: this location is ONLY accessible via the following machines on CRL: boreas, auster, io, ganymede 
 - therefore you must `ssh boreas` before you will be able to see this location 
 - if you want to access this location from your _own_ CRL machine, you will need to spend at least a few days in back-forth emails with research computing to set it up 
 
