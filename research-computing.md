@@ -11,7 +11,7 @@ Your e2 root directory has the following structure:
 - `/temp_work/<username>` - has 5TB file limit for _each_ user. However, _each_ file that is untouched for >30days will be automatically deleted. 
 [more info](http://websvc4.tch.harvard.edu:8090/display/RCK/Usage+Guidelines)
 
-Use this page as a quick guide. Use Research Computing wiki for advanced info (link) [http://rcwiki] (require VPN access).
+Use this page as a quick guide. Use Research Computing wiki for advanced info [link](http://rcwiki) (require VPN access).
 
 # Using CPU/GPU resources 
 
