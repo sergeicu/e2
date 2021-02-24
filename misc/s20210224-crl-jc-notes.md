@@ -55,3 +55,6 @@ ssh boreas, zephyr, eurus, auster
 
 
 interactive slurm 
+
+
+https://www.chpc.utah.edu/documentation/software/slurm.php
