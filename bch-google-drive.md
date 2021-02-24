@@ -1,152 +1,45 @@
+Quick intro to BCH Google Drive.   
 
-############
-# Google Drive
-############
+#### Basics
+- Login - http://drive.bchresearch.org
+- [Install](https://www.google.com/intl/en_ca/drive/download/
+) Google Drive on your laptop
+- IMPORTANT: BCH Google Drive is for NON-PHI data only. 
 
-# Access Google Drive
-http://drive.bchresearch.org
+#### Intro to rclone 
+- To copy files between Google Drive and your CRL machine (or home computer) we use `rclone` 
+- type `rclone` in your Terminal to check if it already installed 
+- [install](https://rclone.org/downloads/) rclone on your CRL machine / home computer 
+- to install rclone on your CRL machine you may also ask Sean for help. 
 
-# Install Google Drive on your laptop
-https://www.google.com/intl/en_ca/drive/download/
-
-# Install rclone on your CRL machine 
-https://rclone.org/downloads/
-
-# Configure rclone on your CRL machine 
-which rclone 
-rclone config 
-[follow instructions]
-
-# Mount Google Drive to your 
-rclone mount --daemon drive:/serge/ /fileserver/fastscratch/serge/gdrive/drive; rclone mount --daemon drive2: /fileserver/fastscratch/serge/gdrive/drive2
-
-drivedir=/fileserver/fastscratch/serge/gdrive/testdrive/
-mkdir $drivedir
-rclone mount --daemon test:/ $drivedir
+#### Configure rclone 
+- In order to copy files between BCH Google Drive and a machine you must first configure it 
+- [Full instructions are here](http://websvc4.tch.harvard.edu:8090/display/RCK/Google+Drive+to+E2)
+- IMPORTANT: you must do this configuration individually on _EACH_ machine that you plan to use with rclone (e.g. your crl machine, your home computer, AND e2 cluster) 
 
 
-############
-# E2 
-############
+#### Copy files between Google Drive and your machine 
+- let's assume that you called your drive `mydrive` while setting up `rclone config` 
+- copy files from your machine to Google Drive - `rclone copy <full_path_to_folder_or_file> mydrive:/ --bwlimit 8650k --tpslimit 8` 
+- the above command will copy files into the root directory of your Google Drive. Swap `/` with `/<folder_name>` to copy to specific folder inside Google Drive
+- copy files from Google Drive to your machine - `rclone copy mydrive:/<folder_to_copy>/ <full_path_on_your_machine> --bwlimit 8650k --tpslimit 8`
+- note that research computing recommends using `--bwlimit 8650k --tpslimit 8` for all copy commands 
 
-# Login to your e2 cluster 
-ssh ch215616@e2.tch.harvard.edu
-[more info](http://websvc4.tch.harvard.edu:8090/display/RCK/Access+to+E2)
+#### Other useful rclone commands 
+- list all files in the root Google Drive directory - `rclone ls mydrive:` 
+- // all folders in specific directory - `rclone lsd mydrive:/<specific_folder>/` 
+- list files and folders in a tree like fashion - `rclone tree mydrive:/`
+- More info [here](https://rclone.org/docs/) 
 
-# Your local directory 
-- /home/ch215616
-- 50 Gb in files 
+#### Mount Google Drive to your CRL filesystem 
+- it is possible to make your Google Drive files available on your CRL filesystem 
+- however, the refresh rate of this can be slow (use with caution)
+- `rclone mount --daemon mydrive:/ <full_path_to_folder>/<name_of_NEW_folder_to_be_created_for_google_drive_files>` 
+- if something went wrong you can unmount this via `fusermount -u <full_path_to_folder>/<name_of_NEW_folder_to_be_created_for_google_drive_files>`
 
-# List of available GPUs and CPUs: 
-http://websvc4.tch.harvard.edu:8090/display/RCK/Partition+Association
-
-# List of additional GPUs and CPUs:
-http://websvc4.tch.harvard.edu:8090/display/RCK/High-Performance+Computing+MGHPCC+Cluster
-
-# Example how to submit jobs (via SLURM)
-http://websvc4.tch.harvard.edu:8090/display/RCK/Submit+job#Submitjob-Examplefiles
-- large memory jobs 
-- matlab jobs 
-- tensorflow / gpu 
-
-# Example of how to submit INTERACTIVE jobs (via SLURM)
-http://websvc4.tch.harvard.edu:8090/display/RCK/Interactive+job
-- Compute Session 
-    - Jupyter Notebook 
-    - Large Memory Session
-  
-# Training Tensorflow notebook:
-http://websvc4.tch.harvard.edu:8090/display/RCK/Tensorflow+Notebook
-
-
-############
-# RSync 
-############
-
-# transfer from CRL filesystem to e2 
-rsync -e ssh -auz $crlfolder/EXAMPLE_FILE ch215616@e2.tch.harvard.edu/home/ch215616/
-
-# transfer from e2 to crl 
-rsync -e ssh -auz ch215616@e2.tch.harvard.edu/home/ch215616/EXAMPLE_FILE $crlfolder
-
-# Parallel file transfer 
-ls | parallel --will-cite -j 4 rsync -ravhzP -e ssh {} ahayati@OSXLAP05101:/Users/ahayati/destination_test
-http://websvc4.tch.harvard.edu:8090/display/RCK/Parallel+file+transfer+with+rsync
-
-############
-# RClone
-############
-
-# transfer from e2 to gdrive 
-rclone copy  MyDrive: --bwlimit 8650k --tpslimit 8
-# list files 
-rclone ls main:
-# copy from e2 to drive
-rclone copy /home/ch215616/EXAMPLE main:/serge/
-
-# More info 
-http://websvc4.tch.harvard.edu:8090/display/RCK/Data+transfer
-
-
-############
-# Jupyter 
-############
-
-# Full instructions 
-# http://websvc4.tch.harvard.edu:8090/display/RCK/Tensorflow+Notebook
-
-# Example submit jobs 
-#http://websvc4.tch.harvard.edu:8090/display/RCK/Submit+job#Submitjob-Examplefiles
-
-# Tesla cards: --gres=gpu:Tesla_T:<N> OR --gres=gpu:Tesla_K:<N> OR --gres=gpu:Titan_RTX:<N> OR --gres=gpu:Quadro_RTX:<N>
-
-# WARNING: 
-#Always specify the environment variable "CUDA_VISIBLE_DEVICES" in your scripts and set it to what you set with --gres. For instance:
-  #SBATCH --gres=gpu:Tesla_K:1
-  #export CUDA_VISIBLE_DEVICES=1
-
-
-# Bash example
-cd
-cd tutorials/batchscript/gpu/cuda
-sbatch sample-0.sh
-
-# Jupyter Notebook example 
-cd $TEMP_WORK
-srun -A bch -p bch-gpu -n 2 --mem=8GB --gres gpu:Tesla_K:1 --pty /bin/bash
-module load anaconda3
-source activate tf-gpu
-jupyter notebook --ip=$(hostname -i) --port=8888 --no-browser
-
-# example from someone's command from `ps -ef | grep gpu:` while on e2 server
-srun -A bch -p bch-gpu --gres=gpu:Quadro_RTX:1 -t 120:00:00 --pty /bin/bash 
-
-    
-############
-# Slurm
-############
-rc # login to e2
-cd tutorials/batchscript/gpu/tensorflow/
-sbatch sample-0.sh
-squeue --user=$USER
-squeue -u $USER
-scancel <jobid>
-    
-    
-# Slurm help 
-    http://websvc4.tch.harvard.edu:8090/pages/viewpage.action?pageId=82223566#FrequentlyAskedQuestions(FAQ)-HowcanIincludealistofnodesforjobsubmissionsinSLURM?
-    
-    
-# Storage 
-    Users have 5TB temporary disk space in /temp_work ($TEMP_WORK) and should use that for temporary large data storage. To learn more visit User Policies#DiskQuota 
-    cd $TEMP_WORK 
-    
-    
-    cd /lab-share/Rad-Warfield-e2/Public
-    # also accessible via boreas,auster,zephyr,eurus on /fileserver/
-    
-    
-# Where are GPUs located: 
-    Tesla K -> 0-0, 0-1;  Tesla T -> 0-0, 0-1; Titan_RTX -> 1-0, 2-0, 3-0; Quadro -> 3-0, 0-0, 0-1;
-    Find these via: 
-    srun -A bch -p bch-gpu --gres=gpu:Quadro_RTX:1 --nodelist gpu-0-1 -t 24:00:00 --pty /bin/bash 
+#### Mount Google Drive to your home computer 
+- you can view folders and files of your Google Drive on your local computer by using Google Drive app ([install instructions](https://www.google.com/intl/en_ca/drive/download/))
+- this may be useful for those who want to use files locally on their home computer (e.g. to view nifti files with ITKsnap) 
+- please make sure that you are NOT connected to Pulse Secure when setting up your Google Drive app on your home computer 
+- note that Google Drive app creates _symlinks_ on your home computer, it does not actually take up space on your computer  
+- any files that you open with Google Drive app are downloaded into a temporary space (and are then discarded after you close them / reboot computer) 
