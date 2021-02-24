@@ -126,7 +126,7 @@ scancel <jobid>
 - therefore you must `ssh boreas` before you will be able to see this location 
 - if you want to access this location from your _own_ CRL machine, you will need to spend at least a few days in back-forth emails with research computing to set it up 
 
-## Copy your data using BCH Google Drive: 
+#### Copy your data using BCH Google Drive: 
 - you can also copy data between e2 and your BCH Google Drive
 - you can do this by using `rclone` command
 - please refer to my [BCH Google Drive tutorial](https://github.com/sergeicu/e2/blob/main/bch-google-drive.md) and [RC website](http://websvc4.tch.harvard.edu:8090/display/RCK/Google+Drive+to+E2) for more info 
