@@ -107,18 +107,20 @@ scancel <jobid>
 - to speed up the copying process you can use [parallel file transfer] http://websvc4.tch.harvard.edu:8090/display/RCK/Parallel+file+transfer+with+rsync)
 
 #### Copy your data using SFTP software:
-- this method is useful for those who prefer to use Finder/Nautilus/Explorer over Terminal to navigate the filesystem instead of Linux Terminal 
+- this method is valuable for those who prefer to use Finder/Nautilus/Explorer over Terminal to navigate the filesystem instead of Linux Terminal 
 - this method can be used to transfer data between your home computer and e2, or your home computer and CRL filesystem 
 - you could _in theory_ use SFTP to transfer files between e2 and CRL filesystem, as long as you install on your CRL machine 
 - The example given here is based on FILEZILLA software 
 - you can use any other SFTP software, e.g. [winscp](http://websvc4.tch.harvard.edu:8090/pages/viewpage.action?pageId=86805011), or [cyberduck](https://cyberduck.io/download/)
 - [Install](https://filezilla-project.org/) Filezilla on your home computer 
-- Open Filezilla and type the following in the top bar: HOST: sftp://e2.tch.harvard.edu Username: <username> Password: <password> Port: 22 
-- Swap sftp://e2.tch.harvard.edu with sftp://<your_crl_machine> if you want to connect to CRL 
+- Open Filezilla and type the following in the top bar: `HOST: sftp://e2.tch.harvard.edu Username: <username> Password: <password> Port: 22` 
+- Swap `sftp://e2.tch.harvard.edu` with `sftp://<your_crl_machine>` if you want to connect to the CRL filesystem instead 
+! [Filezilla-screenshot] (assets/filezilla-screenshot.png)
 - [tip] use an arror drop-down next to Quickconnect button to access previously logged devices 
 - [tip] Click 'View/Remote Directory Tree' for tree-view of the remote machine. 
 - [tip] Right click on remote file and click 'View/Edit' to view file on your computer (it will be stored in temporary folder only) 
 - [tip] Right click on remote file and click 'Download' to download the file to your currently opened local folder 
+
 
 #### Copy your data using /lab-share/Rad-Warfield-e2: 
 - [wormhole] there is a direct link between CRL filesystem and e2 
