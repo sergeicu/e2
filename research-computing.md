@@ -2,7 +2,7 @@
 
 Login to e2 cluster from your CRL machine: 
 - `ssh <username>@e2.tch.harvard.edu`
-- [more info](http://websvc4.tch.harvard.edu:8090/display/RCK/Access+to+E2)
+- [Password-less login instructions](http://websvc4.tch.harvard.edu:8090/display/RCK/Access+to+E2)
 
 Your e2 root directory has the following structure: 
 - `/home/<username>` - the directory upon which you land when connecting to e2 is deceptively named in the same way as your home directory on CRL filesystem 
@@ -40,15 +40,15 @@ Use this page as a quick guide. Use Research Computing wiki for advanced info (l
 - alternatively, if you use anaconda, you can also deploy preinstalled binaries via `conda install <binary>` command (more info below) 
 
 #### Running SLURM in interactive mode vs batch mode
-- SLURM's batch mode will execute scripts for you automatically  
+- SLURM's batch mode will execute scripts for you automatically
 - to start SLURM in batch mode, use `sbatch` command instead of `srun` command 
 - e.g. `sbatch /home/<username>/your_sample_script.sh`
 - there are multiple benefits to running SLURM in batch mode:
-0. Running GUI software (e.g. matlab) is very difficult with e2 interactive mode   
+0. Running GUI software (e.g. matlab) is very difficult with e2 interactive mode (if not impossible)
 1. you do not have to wait for resources to become available to launch your job. SLURM will queue your request and automatically start your job for you 
-2. SLURM will send you emails when your job starts, stops or exits with an error 
+2. SLURM will send you emails when your job starts, stops or throws an error
 3. You can queue multiple tasks in the same script, which will be executed in sequence 
-4. You can run many jobs in parallel by starting many `sbatch` requests 
+4. You can run many jobs in parallel by starting multiple `sbatch` requests 
 
 #### SLURM `srun` options 
 - e.g. `srun -A bch -p bch-interactive --ntasks=4 --mem=2G -t 24:00:00 --pty /bin/bash` 
@@ -56,67 +56,59 @@ Use this page as a quick guide. Use Research Computing wiki for advanced info (l
 - `-p bch-gpu` partition name. Use `bch-compute`/`bch-largemem`/`bch-interactive` for CPU and `bch-gpu` for GPU. [More info](http://websvc4.tch.harvard.edu:8090/display/RCK/Computing+Resources) 
 - `--ntasks=4` number of CPU cores required 
 - `--mem=2G` amount of RAM required. If you need very large RAM, use `-p bch-largemem` option also. 
-- `-t 24:00:00` time allocation. Maximum allowed is 24hours. You can specify less (there are benefits to it). 
+- `-t 24:00:00` time allocation. Maximum allowed is 24hours. You can specify less time (there are many benefits to it). 
 - `--pty /bin/bash` start an interactive bash prompt. 
 
 #### SLURM `sbatch` options
 - You can specify options for `sbatch` in the same as was for `srun`.
-- However, it is much better to specify options _inside_ your .sh script 
-- e.g. example script of running MATLAB with the same options as above (in srun): 
+- However, it is much more convenient add them to your bash (.sh) script 
+- that way you only neede to run `sbatch /home/<username>/your_sample_script.sh`
+- e.g. example of running MATLAB script with the same options as above: 
 ```
 #!/bin/bash
 # Sample batchscript to run a simple MATLAB job on HPC
-#SBATCH --partition=bch-compute             # queue to be used
-#SBATCH --time=00:05:00             # Running time (in hours-minutes-seconds)
-#SBATCH --job-name=test-compute             # Job name
-#SBATCH --mail-type=BEGIN,END,FAIL      # send and email when the job begins, ends or fails
-#SBATCH --mail-user=your_email_address      # Email address to send the job status
-#SBATCH --output=output_%j.txt          # Name of the output file
-#SBATCH --nodes=1               # Number of gpu nodes
-#SBATCH --ntasks=1              # Number of gpu devices on one gpu node
- 
+#SBATCH --partition=bch-compute                           # partitition to be used (same as "-p bch-compute")
+#SBATCH --time=24:00:00                                   # Running time (in hours-minutes-seconds) (same as "-t 00:05:00) 
+#SBATCH --ntasks=4                                        # Number of CPU cores required 
+#SBATCH --mem=2G                                          # Memory required in Gb 
 module load matlab
-matlab -nodisplay -nosplash -nodesktop -r "run('test_matlab.m');exit;"
+matlab -nodisplay -nosplash -nodesktop -r "run('your_sample_matlab_script.m');exit;"
 ```
+- more advanced version (with FULL options):  
 ```
 #!/bin/bash
 # Sample batchscript to run a simple MATLAB job on HPC
-#SBATCH --partition=bch-compute             # partition to be used (same as "-p bch-compute")
-#SBATCH --time=24:00:00                     # Running time (in hours-minutes-seconds) (same as "-t 00:05:00) 
-#SBATCH --job-name=test-compute             # Job name
-#SBATCH --mail-type=BEGIN,END,FAIL          # send and email when the job begins, ends or fails
-#SBATCH --mail-user=your_email_address      # Email address to send the job status
-#SBATCH --output=output_%j.txt              # Name of the output file
-#SBATCH --nodes=1                           # Number of gpu nodes
-#SBATCH --ntasks=1                          # Number of gpu devices on one gpu node
- 
+#SBATCH --partition=bch-compute             # partition to be used 
+#SBATCH --time=00:05:00                     # Running time (in hours-minutes-seconds) 
+#SBATCH --job-name=test-matlab              # Job name
+#SBATCH --mail-type=BEGIN,END, FAIL         # send and email when the job begins, ends or fails
+#SBATCH --mail-user=<your_email_address>    # Email address to send the job status
+#SBATCH --output=output_%j.txt              # The output from the script will be written here instead of the terminal 
+#SBATCH --nodes=1                           # Number of cpu nodes (i.e. how many machines you want) 
+#SBATCH --ntasks=4                          # Number of cpu cores per node  (i.e. how many cores per machine) 
+#SBATCH --mem=10G                           # Memory required in Gb 
 module load matlab
-matlab -nodisplay -nosplash -nodesktop -r "run('test_matlab.m');exit;"
+matlab -nodisplay -nosplash -nodesktop -r "run('your_sample_matlab_script.m');exit;"
 ```
 
-- e.g. `srun -A bch -p bch-gpu -t 24:00:00 --gres=gpu:Quadro_RTX:1 --nodes=1 --ntasks=1 --job-name=test-compute --mem=2G --pty /bin/bash` 
-- e.g. `sbatch -A bch -p bch-compute -t 24:00:00 --mail-type=BEGIN,END,FAIL --mail-user=<username>@childrens.harvard.edu --output=out_%j.txt --nodes=1 --ntasks=1 --job-name=test-compute --mem=2G --pty /bin/bash` 
-- `srun` initiates SLURM algorithm run command 
-- `-A bch` account name (will always be the same) 
-- `-p bch-interactive` - slurm partition name ([more info](http://websvc4.tch.harvard.edu:8090/display/RCK/Computing+Resources)) 
-
-
-
-- e.g. `srun -A bch -p bch-gpu --gres=gpu:Tesla_T:1 --nodes=1 --ntasks=4 -t 24:00:00 --pty /bin/bash` 
-- `--nodes=1` refers to number of GPU nodes. Should be 1 in most cases unless you want to 
-- `--gres=gpu:Titan_RTX:1` only required for requesting GPU. GPUs available are: Tesla_K,Tesla_T, Titan_RTX, Quadro_RTX. `1` refers to number of GPUs that you need for this node. 
-
-#### How to request GPU on e2 
-- 
+#### SLURM with GPUs
+- you can use exactly the same principles as above for instantiating GPU, with few changes required 
+- you must use `--partitiion=bch-gpu` or `-p bch-gpu` flag 
+- you must specify the GPU type to be used with `--gres=gpu:Quadro_RTX:1`
+- where `Quadro_RTX` refers to GPU type and `1` refers to number of GPUs (per node) required 
+- (unless you want to execute on multiple GPUs) you must make sure that you execute `export CUDA_AVAILABLE_DEVICES=1` before running your deep tensorflow / pytorch script 
+- the number in the CUDA_AVAILABLE_DEVICES refers to the same number as in `--gres` command 
+- you can specify the number of CPU cores via `ntassks` and CPU RAM via `mem` as well 
 
 #### List of available GPUs  
 - As of this this month there are ~29 GPUs on the e2 cluster  
 - At least a dozen of them have 24Gb of RAM 
-- These GPUs are of type: Tesla_K, Tesla_T, Titan_RTX (24Gb), Quadro_RTX (24GB)
-- There is a limit of 4 GPUs per person at any one time  
+- These GPUs are of type: Tesla_K, Tesla_T, Titan_RTX, Quadro_RTX 
+- There is a limit of 4 GPUs per person at any one time 
 - [full list](http://websvc4.tch.harvard.edu:8090/display/RCK/Partition+Association)
 
-Tesla_T:<N> OR --gres=gpu:Tesla_K:<N> OR --gres=gpu:Titan_RTX:<N> OR --gres=gpu:Quadro_RTX:<N>
+#### List of available CPUs  
+- 
 
 #### List of additional GPUs and CPUs:
 http://websvc4.tch.harvard.edu:8090/display/RCK/High-Performance+Computing+MGHPCC+Cluster
