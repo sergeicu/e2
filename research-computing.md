@@ -192,7 +192,7 @@ python test.py
 #### Copy your data using rsync: 
 - `rsync` is a linux command that allows you to *copy* files between a linux filesystem and any external file storage system
 - rsync is installed by default on e2.
-- I _believe_ it is also installed on CRL machines. If not, try `sudo yum install rsync` (or ask Sean to help) 
+- It should be installed on all CRL machines. If this isn't the case for your machine, please email Sean/Simon 
 - `rsync -e ssh -auz /fileserver/fastscratch/README.txt <username>@e2.tch.harvard.edu/home/<username>/` - copies file (folder) from CRL to e2 
 - `rsync -e ssh -auz <full_path_to_your_home_computer_folder> <username>@e2.tch.harvard.edu/home/<username>/` - copies file (folder) from your home computer to e2 
 - `rsync -e ssh -auz <username>@e2.tch.harvard.edu/home/<username>/<folder> <full_path_to_your_home_computer_folder> ` - copies file (folder) from e2 to your home computer  
