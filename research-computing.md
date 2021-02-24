@@ -265,3 +265,10 @@ http://websvc4.tch.harvard.edu:8090/display/RCK/Usage+Guidelines
 
 you can use up to 285 cpu(out of 700) 
 33% of the partition's GPU capacity
+
+
+SYNC ENTIRE google drive from e2 to CRL machine / local machine -
+(from alex)
+rclone sync /lab-share/Neuro-Cohen-e2/Public/connectomes         drive_cohenlab_Connectomes:/connectomes    --progress --copy-links --exclude '.*{/**,}' --delete-excluded --delete-during --drive-stop-on-upload-limit
+
+what is upload limit - 100Gb?
