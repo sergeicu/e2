@@ -229,3 +229,6 @@ python test.py
 - you can also copy data between e2 and your BCH Google Drive
 - you can do this by using `rclone` command
 - please refer to my [BCH Google Drive tutorial](https://github.com/sergeicu/e2/blob/main/bch-google-drive.md) for more info
+
+# PHI data on e2 via /lab-share/Rad-Warfield-e2: 
+- tbd with Simon during the journal club  
