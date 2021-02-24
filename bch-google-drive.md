@@ -4,7 +4,7 @@ Quick intro to BCH Google Drive.
 - Login - http://drive.bchresearch.org
 - [Install](https://www.google.com/intl/en_ca/drive/download/
 ) Google Drive on your laptop
-- IMPORTANT: BCH Google Drive is for NON-PHI data only (exception - see [here](#PHIdata)  
+- IMPORTANT: BCH Google Drive is for NON-PHI data only (exception - see [here](#PHI-data)  
 
 #### Intro to rclone 
 - To copy files between Google Drive and your CRL machine (or home computer) we use `rclone` 
@@ -44,5 +44,5 @@ Quick intro to BCH Google Drive.
 - note that Google Drive app creates _symlinks_ on your home computer, it does not actually take up space on your computer  
 - any files that you open with Google Drive app are downloaded into a temporary space (and are then discarded after you close them / reboot computer) 
 
-#### PHI data 
+#### PHI data
 - tbd with Simon and Alex
