@@ -36,7 +36,7 @@ Use this page as a quick guide. Use Research Computing wiki for advanced info (l
 - to load any of these software you write the following command _after_ you logged into CPU/GPU node: `load module <name>` 
 - e.g. `module load matlab`, `module load anaconda`, `module load singularity`
 - to request new software to be installed you must write to `research-computing@childrens.harvard.edu` 
-- alternatively, if you know how to use Docker, how can deploy Docker images via `singularity` software 
+- alternatively, if you know how to use Docker, how can deploy Docker images via `singularity` software (more info below)
 - alternatively, if you use anaconda, you can also deploy preinstalled binaries via `conda install <binary>` command (more info below) 
 
 #### Running SLURM in interactive mode vs batch mode
@@ -145,85 +145,39 @@ python test.py
 
 
 #### List of available CPUs  
-- A
+- [Info](http://websvc4.tch.harvard.edu:8090/display/RCK/Computing+Resources)
+- Please ask Alex for more help on CPUs (I mostly just use GPUs) 
 
 #### On deploying Docker images 
 - Docker requires sudo access, which is unavailable on e2
 - Use singularity instead, which can build and run docker images without sudo 
 - Instructions on building singularity images are [here](http://websvc4.tch.harvard.edu:8090/pages/viewpage.action?pageId=96637887)
 
-#### Using anaconda/conda
-- to load 
+#### Jupyter Lab / Notebook
+1. Login to e2 root node 
+2. Get interactive CPU/GPU instance via `srun` command
+3. Load anaconda/conda `module load anaconda3`
+4. Activate environment via `source activate <environment>` (to list available `<environment>` run `conda env list`)
+5. Start Jupyter `jupyter lab --ip=$(hostname -i) --port=8888 --no-browser` 
+6. Note the output of the above command. e.g. `http://192.168.45.23:8888/?token=1cf2e1b601987535cf302a1b98649c2a36a4ea40fe2a5af6`
+7. Open a Terminal on your CRL machine / home computer and enter: `ssh -N -f -L 8888:<host_ip>:8888 <username>@rayan`, where <host_ip> corresponds to `192.168.45.23` in the output above (6.) 
+8. Open browser on your CRL machine / home computer and navigate to: `http://<host_ip>:8888`
+9. The browser will request token. Enter `<token>`, where token corresponds to `1cf2e1b601987535cf302a1b98649c2a36a4ea40fe2a5af6` in the output above (6.) 
+- More info [here](http://websvc4.tch.harvard.edu:8090/display/RCK/Tensorflow+Notebook)
+
+#### Tensorboard on e2
+- start tensorboard on e2 via `tensorboard --logdir <path_to_training_location>` 
+- perform steps 7 and 8 as in "Jupyter Lab/Notebook" instructions above. Substitute port 8888 with port given by tensorboard (typically it is 6006). You can also try sub <host_ip> with `localhost` if no host_ip given by tensorboard. 
+
+#### Visual Studio code (Remote Development)  
+- If you use VS Code, did you know that you can DIRECTLY access files on remote server via [Remote Development pack](https://code.visualstudio.com/docs/remote/remote-overview)? 
+- It is a super convenient way to work in a fully integrated IDE with DIRECT access to your files on CRL filesystem / E2 filesystem 
+- If want to learn more - please ask me (Serge) - perhaps we can organize another CRL JC on it 
 
 #### List of additional GPUs and CPUs:
-http://websvc4.tch.harvard.edu:8090/display/RCK/High-Performance+Computing+MGHPCC+Cluster
-
-#### Example how to submit jobs (via SLURM)
-http://websvc4.tch.harvard.edu:8090/display/RCK/Submit+job#Submitjob-Examplefiles
-- large memory jobs 
-- matlab jobs 
-- tensorflow / gpu 
-
-#### Example of how to submit INTERACTIVE jobs (via SLURM)
-http://websvc4.tch.harvard.edu:8090/display/RCK/Interactive+job
-- Compute Session 
-    - Jupyter Notebook 
-    - Large Memory Session
+- Additional GPU and CPU are available via MGH's MGHHPCCC cluster
+- Instructions are [here](http://websvc4.tch.harvard.edu:8090/display/RCK/High-Performance+Computing+MGHPCC+Cluster)
   
-#### Training Tensorflow notebook:
-http://websvc4.tch.harvard.edu:8090/display/RCK/Tensorflow+Notebook
-
-
-#### Jupyter 
-
-#### Full instructions 
-#### http://websvc4.tch.harvard.edu:8090/display/RCK/Tensorflow+Notebook
-
-#### Example submit jobs 
-#http://websvc4.tch.harvard.edu:8090/display/RCK/Submit+job#Submitjob-Examplefiles
-
-#### Tesla cards: --gres=gpu:Tesla_T:<N> OR --gres=gpu:Tesla_K:<N> OR --gres=gpu:Titan_RTX:<N> OR --gres=gpu:Quadro_RTX:<N>
-
-#### WARNING: 
-```#Always specify the environment variable "CUDA_VISIBLE_DEVICES" in your scripts and set it to what you set with --gres. For instance:
-  #SBATCH --gres=gpu:Tesla_K:1
-  #export CUDA_VISIBLE_DEVICES=1
-```
-
-#### Bash example
-cd
-cd tutorials/batchscript/gpu/cuda
-sbatch sample-0.sh
-
-#### Jupyter Notebook example 
-cd $TEMP_WORK
-srun -A bch -p bch-gpu -n 2 --mem=8GB --gres gpu:Tesla_K:1 --pty /bin/bash
-module load anaconda3
-source activate tf-gpu
-jupyter notebook --ip=$(hostname -i) --port=8888 --no-browser
-
-#### example from someone's command from `ps -ef | grep gpu:` while on e2 server
-srun -A bch -p bch-gpu --gres=gpu:Quadro_RTX:1 -t 120:00:00 --pty /bin/bash 
-
-    
-#### Slurm
-rc # login to e2
-cd tutorials/batchscript/gpu/tensorflow/
-sbatch sample-0.sh
-squeue --user=$USER
-squeue -u $USER
-scancel <jobid>
-    
-    
-#### Slurm help 
-    http://websvc4.tch.harvard.edu:8090/pages/viewpage.action?pageId=82223566#FrequentlyAskedQuestions(FAQ)-HowcanIincludealistofnodesforjobsubmissionsinSLURM?
-    
-        
-#### Where are GPUs located: 
-    Tesla K -> 0-0, 0-1;  Tesla T -> 0-0, 0-1; Titan_RTX -> 1-0, 2-0, 3-0; Quadro -> 3-0, 0-0, 0-1;
-    Find these via: 
-    srun -A bch -p bch-gpu --gres=gpu:Quadro_RTX:1 --nodelist gpu-0-1 -t 24:00:00 --pty /bin/bash 
-
 # Data Transfer 
 
 #### Copying your data to & from e2: 
