@@ -50,16 +50,61 @@ Use this page as a quick guide. Use Research Computing wiki for advanced info (l
 3. You can queue multiple tasks in the same script, which will be executed in sequence 
 4. You can run many jobs in parallel by starting many `sbatch` requests 
 
-#### SLURM `sbatch` and `srun` options 
-- e.g. `srun -A bch -p bch-gpu --gres=gpu:Titan_RTX:1 --nodes=1 --ntasks=4 -t 24:00:00 --pty /bin/bash` 
+#### SLURM `srun` options 
+- e.g. `srun -A bch -p bch-interactive --ntasks=4 --mem=2G -t 24:00:00 --pty /bin/bash` 
 - `-A bch` account name (always the same) 
 - `-p bch-gpu` partition name. Use `bch-compute`/`bch-largemem`/`bch-interactive` for CPU and `bch-gpu` for GPU. [More info](http://websvc4.tch.harvard.edu:8090/display/RCK/Computing+Resources) 
-- 
+- `--ntasks=4` number of CPU cores required 
+- `--mem=2G` amount of RAM required. If you need very large RAM, use `-p bch-largemem` option also. 
+- `-t 24:00:00` time allocation. Maximum allowed is 24hours. You can specify less (there are benefits to it). 
+- `--pty /bin/bash` start an interactive bash prompt. 
+
+#### SLURM `sbatch` options
+- You can specify options for `sbatch` in the same as was for `srun`.
+- However, it is much better to specify options _inside_ your .sh script 
+- e.g. example script of running MATLAB with the same options as above (in srun): 
+```
+#!/bin/bash
+# Sample batchscript to run a simple MATLAB job on HPC
+#SBATCH --partition=bch-compute             # queue to be used
+#SBATCH --time=00:05:00             # Running time (in hours-minutes-seconds)
+#SBATCH --job-name=test-compute             # Job name
+#SBATCH --mail-type=BEGIN,END,FAIL      # send and email when the job begins, ends or fails
+#SBATCH --mail-user=your_email_address      # Email address to send the job status
+#SBATCH --output=output_%j.txt          # Name of the output file
+#SBATCH --nodes=1               # Number of gpu nodes
+#SBATCH --ntasks=1              # Number of gpu devices on one gpu node
+ 
+module load matlab
+matlab -nodisplay -nosplash -nodesktop -r "run('test_matlab.m');exit;"
+```
+```
+#!/bin/bash
+# Sample batchscript to run a simple MATLAB job on HPC
+#SBATCH --partition=bch-compute             # partition to be used (same as "-p bch-compute")
+#SBATCH --time=24:00:00                     # Running time (in hours-minutes-seconds) (same as "-t 00:05:00) 
+#SBATCH --job-name=test-compute             # Job name
+#SBATCH --mail-type=BEGIN,END,FAIL          # send and email when the job begins, ends or fails
+#SBATCH --mail-user=your_email_address      # Email address to send the job status
+#SBATCH --output=output_%j.txt              # Name of the output file
+#SBATCH --nodes=1                           # Number of gpu nodes
+#SBATCH --ntasks=1                          # Number of gpu devices on one gpu node
+ 
+module load matlab
+matlab -nodisplay -nosplash -nodesktop -r "run('test_matlab.m');exit;"
+```
+
 - e.g. `srun -A bch -p bch-gpu -t 24:00:00 --gres=gpu:Quadro_RTX:1 --nodes=1 --ntasks=1 --job-name=test-compute --mem=2G --pty /bin/bash` 
 - e.g. `sbatch -A bch -p bch-compute -t 24:00:00 --mail-type=BEGIN,END,FAIL --mail-user=<username>@childrens.harvard.edu --output=out_%j.txt --nodes=1 --ntasks=1 --job-name=test-compute --mem=2G --pty /bin/bash` 
 - `srun` initiates SLURM algorithm run command 
 - `-A bch` account name (will always be the same) 
 - `-p bch-interactive` - slurm partition name ([more info](http://websvc4.tch.harvard.edu:8090/display/RCK/Computing+Resources)) 
+
+
+
+- e.g. `srun -A bch -p bch-gpu --gres=gpu:Tesla_T:1 --nodes=1 --ntasks=4 -t 24:00:00 --pty /bin/bash` 
+- `--nodes=1` refers to number of GPU nodes. Should be 1 in most cases unless you want to 
+- `--gres=gpu:Titan_RTX:1` only required for requesting GPU. GPUs available are: Tesla_K,Tesla_T, Titan_RTX, Quadro_RTX. `1` refers to number of GPUs that you need for this node. 
 
 #### How to request GPU on e2 
 - 
