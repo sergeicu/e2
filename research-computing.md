@@ -1,41 +1,27 @@
-
-############
-# Google Drive
-############
-
-# Access Google Drive
-http://drive.bchresearch.org
-
-# Install Google Drive on your laptop
-https://www.google.com/intl/en_ca/drive/download/
-
-# Install rclone on your CRL machine 
-https://rclone.org/downloads/
-
-# Configure rclone on your CRL machine 
-which rclone 
-rclone config 
-[follow instructions]
-
-# Mount Google Drive to your 
-rclone mount --daemon drive:/serge/ /fileserver/fastscratch/serge/gdrive/drive; rclone mount --daemon drive2: /fileserver/fastscratch/serge/gdrive/drive2
-
-drivedir=/fileserver/fastscratch/serge/gdrive/testdrive/
-mkdir $drivedir
-rclone mount --daemon test:/ $drivedir
-
-
-############
-# E2 
-############
-
-# Login to your e2 cluster 
-ssh ch215616@e2.tch.harvard.edu
+Login to your e2 cluster from your CRL machine 
+`ssh <username>@e2.tch.harvard.edu`
 [more info](http://websvc4.tch.harvard.edu:8090/display/RCK/Access+to+E2)
 
-# Your local directory 
-- /home/ch215616
-- 50 Gb in files 
+Your e2 root directory has the following structure: 
+- `/home/<username>` - root workdir is named as your CRL machine 
+- root workdir has 50 Gb file limit 
+- `/temp_work/<username>` - has 5TB file limit for _each_ user. However, _each_ file that is untouched for >30days will be automatically deleted. 
+[more info](http://websvc4.tch.harvard.edu:8090/display/RCK/Usage+Guidelines)
+
+Copying your data to & from e2: 
+- e2 'node' (machine) does _not_ have direct access to CRL filesystem. e.g. /fileserver/motion/, /fileserver/projects/, /fileserver/abd
+- it also does _not_ have direct access to your local crl home folder /home/ch215616/ 
+- you cannot mount any given CRL filesystems on e2 
+- there are a number of tools that one could use to share data between CRL (or your local computer) and e2 
+- e.g. rsync, any SFTP software, /lab-share/Rad-Warfield-e2, BCH Google Drive
+- IMPORTANT: all data shared to e2 must be NON-PHI
+
+Copy your data using rsync: 
+- `rsync` is linux command that allows *copy* of files between linux harddrive and any external file storage systems 
+- rsync is installed by default on e2. I _believe_ it is also installed on CRL machines. If not, try `sudo yum install rsync` (or ask Sean to help) 
+- `rsync -e ssh -auz /fileserver/fastscratch/README.txt <username>@e2.tch.harvard.edu/home/<username>/` - copies file (folder) from CRL to e2 
+- `rsync -e ssh -auz <full_path_to_your_home_computer_folder> <username>@e2.tch.harvard.edu/home/<username>/`
+
 
 # List of available GPUs and CPUs: 
 http://websvc4.tch.harvard.edu:8090/display/RCK/Partition+Association
