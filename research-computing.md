@@ -90,11 +90,11 @@ scancel <jobid>
 
 #### Copying your data to & from e2: 
 - e2 'node' (machine) does _not_ have direct access to CRL filesystem. e.g. /fileserver/motion/, /fileserver/projects/, /fileserver/abd
-- it also does _not_ have direct access to your local crl home folder /home/ch215616/ 
-- you cannot mount any given CRL filesystems on e2 
-- there are a number of tools that one could use to share data between CRL (or your local computer) and e2 
-- e.g. rsync, any SFTP software, /lab-share/Rad-Warfield-e2, BCH Google Drive
-- IMPORTANT: all data shared to e2 must be NON-PHI
+- it also does _not_ have direct access to your local crl home folder /home/ch215616/ either 
+- you cannot mount any custom CRL filesystems on e2 
+- there are tools that you can use to copy data between the CRL filesystem (or your local computer) and e2  
+- These tools are: rsync, any SFTP software, /lab-share/Rad-Warfield-e2, BCH Google Drive
+- IMPORTANT: all data copied to e2 must be NON-PHI
 
 #### Copy your data using rsync: 
 - `rsync` is linux command that allows *copy* of files between linux harddrive and any external file storage systems 
