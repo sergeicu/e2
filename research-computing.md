@@ -1,6 +1,19 @@
-Quick Links 
+**Quick Links**
+To be completed (links are not active yet)
 - [Request CPU](#How-to-request-CPU-on-e2-(interactive))
-- [Run GPU](#SLURM-with-GPUs)
+- [Request GPU](#SLURM-with-GPUs)
+- [Start Matlab]()
+- [Start Jupyter Notebook]()
+- [Submit a batch job]()
+- [SLURM cheatsheet]()
+- [List of GPUs]()
+- [List of CPUs]()
+- [Conda]()
+- [Docker / Singularity]()
+- [Tensorboard]()
+- [How to do Data Transfer]()
+- [PHI data and e2]()
+- [Develop directly on e2 with VS Code]()
 
 Most links in this tutorial require BCH VPN access. Make sure you are logged in via Pulse Secure.   
 Use this page as a beginner guide. Use Research Computing wiki for advanced info ([link](http://rcwiki)). 
