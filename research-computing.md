@@ -1,5 +1,6 @@
 Quick Links 
 - [Request CPU](#How-to-request-CPU-on-e2-(interactive)
+- [Run GPU](#SLURM-with-GPUs)
 
 Most links in this tutorial require BCH VPN access. Make sure you are logged in via Pulse Secure.   
 Use this page as a beginner guide. Use Research Computing wiki for advanced info ([link](http://rcwiki)). 
