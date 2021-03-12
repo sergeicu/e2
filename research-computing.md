@@ -1,5 +1,5 @@
 Quick Links 
-- [Request CPU](#How-to-request-CPU-on-e2-(interactive)
+- [Request CPU](#How-to-request-CPU-on-e2-(interactive))
 - [Run GPU](#SLURM-with-GPUs)
 
 Most links in this tutorial require BCH VPN access. Make sure you are logged in via Pulse Secure.   
@@ -29,7 +29,7 @@ Your e2 root directory has the following structure:
 - if no compute nodes are available it will queue your request and execute your job as soon as resources become available 
 - all BCH researchers have access to e2 cluster
 
-#### How to request CPU on e2 (interactive) 
+#### How to request CPU on e2 (interactive)
 - login to e2 via `ssh <username>@e2.tch.harvard.edu`
 - run `srun -A bch -p bch-interactive --pty /bin/bash`
 - is equivalent to `ssh <machine>` in SLURM 
