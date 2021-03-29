@@ -118,7 +118,7 @@ matlab -nodisplay -nosplash -nodesktop -r "run('your_sample_matlab_script.m');ex
 - you must use `--partitiion=bch-gpu` or `-p bch-gpu` flag 
 - you must specify the GPU type to be used with `--gres=gpu:Quadro_RTX:1`
 - where `Quadro_RTX` refers to GPU type and `1` refers to number of GPUs (per node) required 
-- (unless you want to execute on multiple GPUs) you must make sure that you execute `export CUDA_AVAILABLE_DEVICES=1` before running your deep tensorflow / pytorch script 
+- (unless you want to execute on multiple GPUs) you must make sure that you execute `export CUDA_AVAILABLE_DEVICES=0` before running your deep tensorflow / pytorch script 
 - the number in the CUDA_AVAILABLE_DEVICES refers to the same number as in `--gres` command 
 - [optional] you can specify the number of CPU cores via `ntasks` and _CPU_ RAM via `mem` as well 
 - you must run `module load anaconda3` followed by a) `source activate tf-gpu` for tensorflow access b) `source activate pytorch-gpu` for pytorch access  
@@ -137,7 +137,7 @@ matlab -nodisplay -nosplash -nodesktop -r "run('your_sample_matlab_script.m');ex
 #SBATCH --mem=8G      # NB this refers to CPU RAM, not GPU RAM
 #SBATCH --gres=gpu:Tesla_T:1
 
-export CUDA_VISIBLE_DEVICES=1
+export CUDA_VISIBLE_DEVICES=0
 module load anaconda3
 source activate tf-gpu
 python test.py
