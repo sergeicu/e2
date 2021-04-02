@@ -211,9 +211,9 @@ python test.py
 - `rsync` is a linux command that allows you to *copy* files between a linux filesystem and any external file storage system
 - rsync is installed by default on e2.
 - It should be installed on all CRL machines. If this isn't the case for your machine, please email Sean/Simon 
-- `rsync -e ssh -auz /fileserver/fastscratch/README.txt <username>@e2.tch.harvard.edu/home/<username>/` - copies file (folder) from CRL to e2 
-- `rsync -e ssh -auz <full_path_to_your_home_computer_folder> <username>@e2.tch.harvard.edu/home/<username>/` - copies file (folder) from your home computer to e2 
-- `rsync -e ssh -auz <username>@e2.tch.harvard.edu/home/<username>/<folder> <full_path_to_your_home_computer_folder> ` - copies file (folder) from e2 to your home computer  
+- `rsync -e ssh -auz /fileserver/fastscratch/README.txt <username>@e2.tch.harvard.edu:/home/<username>/` - copies file (folder) from CRL to e2 
+- `rsync -e ssh -auz <full_path_to_your_home_computer_folder> <username>@e2.tch.harvard.edu:/home/<username>/` - copies file (folder) from your home computer to e2 
+- `rsync -e ssh -auz <username>@e2.tch.harvard.edu:/home/<username>/<folder> <full_path_to_your_home_computer_folder> ` - copies file (folder) from e2 to your home computer  
 - note that you must use `ssh` and `-auz` in your command 
 - to speed up the copying process you can use [parallel file transfer] http://websvc4.tch.harvard.edu:8090/display/RCK/Parallel+file+transfer+with+rsync)
 
